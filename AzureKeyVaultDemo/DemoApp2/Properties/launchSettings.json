@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "DemoApp2": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7282",
+      "launchBrowser": false
+    }
+  }
+}
