@@ -9,6 +9,7 @@ public interface IUserRepository : IGenericRepository<User>
     Task<User> LoginAsync(string username, string password);
     Task SignupAsync(User user);
     Task<bool> UserExistsAsync(string email);
+    Task<(IEnumerable<User> Users, int Rank)> GetLeaderboardAsync(int topCount, int userId);
 }
 
 public class UserRepository : GenericRepository<User>, IUserRepository
@@ -36,5 +37,22 @@ public class UserRepository : GenericRepository<User>, IUserRepository
         var user = await Context.User.FirstOrDefaultAsync(u => u.Email == email);
 
         return user != null;
+    }
+
+    public async Task<(IEnumerable<User> Users, int Rank)> GetLeaderboardAsync(int topCount, int userId)
+    {
+        var users = await Context.User
+            .OrderBy(u => u.Points)
+            .Take(topCount)
+            .ToListAsync();
+
+        var user = await SelectByIdAsync(userId);
+
+        var rank = (await Context.User
+            .OrderBy(u => u.Points)
+            .Where(u => u.Points > user.Points)
+            .ToListAsync()).Count + 1;
+
+        return (users, rank);
     }
 }

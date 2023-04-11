@@ -10,5 +10,6 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IBadgeService, BadgeService>();
         services.AddScoped<IInProgressBadgeService, InProgressBadgeService>();
         services.AddScoped<IAccountService, AccountService>();
+        services.AddScoped<ILeaderboardService, LeaderboardService>();
     }
 }
